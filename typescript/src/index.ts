@@ -1,13 +1,22 @@
 // generic index.ts fil
 
 
+import { DvText } from "ehrcraft-form-api";
 import {API} from "ehrcraft-form-api/dist/api"; 
 import { BT_OBJECT } from "./class_bt";
 
-const FORMID_SYSTOLISK = "encounter/blodtrykk/uspesifisert_hendelse/systolisk"; 
-const FORMID_DIASTOLISK = "encounter/blodtrykk/uspesifisert_hendelse/diastolisk"; 
-const FORMID_MIDDELARTERIETRYKK = ""; 
-const FORMID_TIME = "encounter/blodtrykk/uspesifisert_hendelse/time"; 
+const FORMID_SYSTOLISK = "klinisk_kontakt/blodtrykk/uspesifisert_hendelse/systolisk"; 
+const FORMID_DIASTOLISK = "klinisk_kontakt/blodtrykk/uspesifisert_hendelse/diastolisk"; 
+const FORMID_TIME_BT = "klinisk_kontakt/blodtrykk/uspesifisert_hendelse/time"; 
+
+
+const FORMID_TEMPERATUR = "klinisk_kontakt/kroppstemperatur/uspesifisert_hendelse/temperatur"
+const FORMID_TEMPERATUR_TIME = "klinisk_kontakt/kroppstemperatur/uspesifisert_hendelse/time"; 
+
+
+const FOMRID_TEXT = "klinisk_kontakt/vitalia_sammendrag_dips/any_event/vitalia_sammendrag/vitalia_sammendrag"; 
+
+
 
 
 export function main(api: API) {
@@ -23,7 +32,7 @@ export function main(api: API) {
 
     var all_sys = api.getFields(FORMID_SYSTOLISK).toString().split(",");
     var all_dia = api.getFields(FORMID_DIASTOLISK).toString().split(",")
-    var all_time = api.getFields(FORMID_TIME).toString().split(","); 
+    var all_time = api.getFields(FORMID_TIME_BT).toString().split(","); 
 
     console.log(api.getFields("encounter/blodtrykk/uspesifisert_hendelse/systolisk"))  ;  
 
@@ -31,7 +40,7 @@ export function main(api: API) {
     // lage og legge objekter inn i en liste 
     for (let i= 0; i < all_sys.length; i++) {
 
-        createObjectAndAddToList(api,
+        createBTObjectAndAddToList(api,
             all_sys[i],
             all_dia[i],
             all_time[i]  )
@@ -81,7 +90,14 @@ export function main(api: API) {
  
   
 
+// skriver teksten til det fritekst feltet 
+  console.log("Prøver å generere og sende text til feltet")
 
+let stringToSendToFritekst = generateDescribingText();
+
+let textObject = new DvText(stringToSendToFritekst);
+
+api.setFieldValue(FOMRID_TEXT, textObject); 
 
 
 
@@ -89,7 +105,7 @@ export function main(api: API) {
 // FUNKSJONER 
 
 
-    function createObjectAndAddToList(api:API, systolisk:string, diastolisk:any,  time:string){
+    function createBTObjectAndAddToList(api:API, systolisk:string, diastolisk:any,  time:string){
 
         var nytt_objekt = new BT_OBJECT(systolisk, diastolisk, time)
 
@@ -160,12 +176,12 @@ export function main(api: API) {
         for (let i = 0; i < sorted.length; i++){
     
                 if (sorted[i].getStatus() == "første"){
-                    let forverring = "\n  \n  "    + sorted[i].getTextDate() +
+                    let forste = "\n  \n  "    + sorted[i].getTextDate() +
                                       " Kl" + sorted[i].getReadableTime() + 
                                      " ble det målt systolisk BT som var på " + sorted[i].getSystolisk() + 
                                      " med NEWS på " + sorted[i].getNewsScore(); 
 
-                    stringToSend = stringToSend.concat(forverring)
+                    stringToSend = stringToSend.concat(forste)  // her sto det forverring ? 
                 }
 
                 if (sorted[i].getStatus() == "forverret"){
@@ -235,14 +251,11 @@ export function main(api: API) {
 
 
 const banner = `
-_______                              _       _   
-|__   __|                            (_)     | |  
-   | |_   _ _ __   ___  ___  ___ _ __ _ _ __ | |_ 
-   | | | | | '_ \ / _ \/ __|/ __| '__| | '_ \| __|
-   | | |_| | |_) |  __/\__ \ (__| |  | | |_) | |_ 
-   |_|\__, | .__/ \___||___/\___|_|  |_| .__/ \__|
-       __/ | |                         | |        
-      |___/|_|                         |_|   
+ _|  o  |_    _    _  |  
+(_|  o  | |  (_|  (_  |< 
+                         
+
+
 `;
 
 
