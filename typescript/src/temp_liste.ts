@@ -37,8 +37,6 @@ export function temperatur_liste(api:API) {
     }
     
 
-
-
 // sorterer listen på tid 
   let sorted = returnListSortedByTime(); 
   console.log("S O R T E D    L I S T"); 

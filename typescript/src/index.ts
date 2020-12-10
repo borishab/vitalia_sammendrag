@@ -118,8 +118,6 @@ export function main(api: API) {
         return stringToSend; 
     }
 
-
-    
 }
 
  
