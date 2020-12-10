@@ -33,12 +33,12 @@
     </details>
   </description>
   <uid>
-    <value>c6c430f7-23fd-4de5-9328-80f9ab13a09b</value>
+    <value>d34fc4c9-78ee-476a-b290-7605bb4aef38</value>
   </uid>
   <template_id>
-    <value>vitalia_sammendrag_test</value>
+    <value>vitalia_sammendrag_test001</value>
   </template_id>
-  <concept>vitalia_sammendrag_test</concept>
+  <concept>vitalia_sammendrag_test001</concept>
   <definition>
     <rm_type_name>COMPOSITION</rm_type_name>
     <occurrences>
@@ -4184,7 +4184,7 @@
       <value>openEHR-EHR-COMPOSITION.encounter.v1</value>
     </archetype_id>
     <template_id>
-      <value>vitalia_sammendrag_test</value>
+      <value>vitalia_sammendrag_test001</value>
     </template_id>
     <term_definitions code="at0000">
       <items id="description">Interaksjon, kontakt eller omsorgshendelse mellom et individ og helsepersonell.</items>
@@ -4200,4 +4200,11 @@
       <items id="text">Utvidelse</items>
     </term_definitions>
   </definition>
+  <view>
+    <constraints path="[openEHR-EHR-COMPOSITION.encounter.v1]/content[openEHR-EHR-OBSERVATION.blood_pressure.v1]/protocol[at0011]">
+      <items id="pass_through">
+        <value>true</value>
+      </items>
+    </constraints>
+  </view>
 </template>
