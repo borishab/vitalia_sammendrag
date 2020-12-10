@@ -1,40 +1,38 @@
 import { DvDate, DvDateTime } from 'ehrcraft-form-api';
-import {FORMID_SYSTOLISK, FORMID_DIASTOLISK, FORMID_TIME_BT} from './index'
+import {FORMID_TEMPERATUR, FORMID_TEMPERATUR_TIME} from './index'
 import {API} from "ehrcraft-form-api/dist/api"; 
-import { BT_OBJECT } from "./class_bt";
+import { TEMP_OBJECT } from "./class_temp";
 
-export function Blodtrykks_liste(api:API) {
+export function temperatur_liste(api:API) {
 
     
-    var all_sys = api.getFields(FORMID_SYSTOLISK).toString().split(",");
-    var all_dia = api.getFields(FORMID_DIASTOLISK).toString().split(",")
-    var all_time = api.getFields(FORMID_TIME_BT).toString().split(","); 
+    var all_temp = api.getFields(FORMID_TEMPERATUR).toString().split(",");
+    var all_temp_time = api.getFields(FORMID_TEMPERATUR_TIME).toString().split(",")
 
-    console.log(api.getFields("encounter/blodtrykk/uspesifisert_hendelse/systolisk"))  ;  
+    console.log(api.getFields("klinisk_kontakt/kroppstemperatur/uspesifisert_hendelse/temperatur"));  
 
 
-    var BT_List = new Array<BT_OBJECT>();
+    var temp_list = new Array<TEMP_OBJECT>();
 
     // lage og legge objekter inn i en liste 
-    for (let i= 0; i < all_sys.length; i++) {
+    for (let i= 0; i < all_temp_time.length; i++) {
 
-        createBTObjectAndAddToList(
-            all_sys[i],
-            all_dia[i],
-            all_time[i]  )
+        createTempObjectAndAddToList(
+            all_temp[i],
+            all_temp_time[i]
+            )
     }
 
 
     // generer NEWS score og skriv ut alle objekter 
-    for (let i = 0; i < BT_List.length; i++){
-
-        BT_List[i].generateNewsScore(); 
+    for (let i = 0; i < temp_list.length; i++){
+        temp_list[i].generateNewsScore(); 
         console.log("dette er news score på element nr " + i)
-        console.log(BT_List[i].getNewsScore());
-        console.log("dette er systolisk BT på element nr " + i)
-        console.log(BT_List[i].getSystolisk()); 
+        console.log(temp_list[i].getNewsScore());
+        console.log("dette er temperatur på element nr " + i)
+        console.log(temp_list[i].getTemperatur()); 
         console.log("dette er hele objektet på element nr " + i)
-        console.log(BT_List[i].printObject()); 
+        console.log(temp_list[i].printObject()); 
 
     }
     
@@ -71,23 +69,24 @@ return sorted;
 
 // HJELPEFUNKSJONER 
 
-  function createBTObjectAndAddToList(systolisk:string, diastolisk:any,  time:string){
+  function createTempObjectAndAddToList(temperatur:string,  time:string){
 
-    var nytt_objekt = new BT_OBJECT(systolisk, diastolisk, time)
+    var nytt_objekt = new TEMP_OBJECT(temperatur, time)
 
-    BT_List.push(nytt_objekt)
+    temp_list.push(nytt_objekt)
 }
 
 
 // sorterer listen på tid og returnerer den sorterte listen 
 function returnListSortedByTime() {
 
-    BT_List.sort(function (a, b) {
+    temp_list.sort(function (a, b) {
         if (a.time > b.time) { return 1 };
         if (a.time < b.time) { return -1 };
         return 0;
         });
-    return BT_List;
+
+    return temp_list;
 }
 
 
@@ -105,7 +104,7 @@ function setNewsStatus(){
 
         sorted[0].setStatus("første");
 
-        if (current.getSystolisk() != "" ){
+        if (current.getTemperatur() != "" ){
 
 
             if(current.getNewsScore() < previous.getNewsScore()) {
