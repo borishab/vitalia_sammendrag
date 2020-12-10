@@ -15,10 +15,7 @@ export class BT_OBJECT {
             this.news_score = news_score; 
             this.status = status;
         } 
- 
-     getTime(){
-         return this.time
-     }
+
 
      getReadableTime(){
         

@@ -14,9 +14,6 @@ export class TEMP_OBJECT {
             this.status = status;
         } 
  
-     getTime(){
-         return this.time
-     }
 
      getReadableTime(){
         
@@ -51,10 +48,11 @@ export class TEMP_OBJECT {
         return stringToReturn; 
 
      }
-     
+
 
      getTemperatur(){
-         return this.temperatur.toString()
+        let split = this.temperatur.toString().split(" "); 
+        return split[0];
      }
 
 

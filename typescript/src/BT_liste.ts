@@ -18,7 +18,7 @@ export function Blodtrykks_liste(api:API) {
     // lage og legge objekter inn i en liste 
     for (let i= 0; i < all_sys.length; i++) {
 
-        createBTObjectAndAddToList(api,
+        createBTObjectAndAddToList(
             all_sys[i],
             all_dia[i],
             all_time[i]  )
@@ -73,7 +73,7 @@ return sorted;
 
 // HJELPEFUNKSJONER 
 
-  function createBTObjectAndAddToList(api:API, systolisk:string, diastolisk:any,  time:string){
+  function createBTObjectAndAddToList(systolisk:string, diastolisk:any,  time:string){
 
     var nytt_objekt = new BT_OBJECT(systolisk, diastolisk, time)
 
